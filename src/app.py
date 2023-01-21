@@ -11,6 +11,8 @@ from api.models import db
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
+from flask_jwt_extended import JWTManager
+
 
 #from models import Person
 
@@ -32,6 +34,8 @@ db.init_app(app)
 
 # Allow CORS requests to this API
 CORS(app)
+# CORS(app, resources=r'/api/*')
+
 
 # add the admin
 setup_admin(app)
@@ -41,6 +45,11 @@ setup_commands(app)
 
 # Add all endpoints form the API with a "api" prefix
 app.register_blueprint(api, url_prefix='/api')
+
+
+app.config["JWT_SECRET_KEY"] = "palabraparagenerarauthentication"
+jwt = JWTManager(app)
+
 
 # Handle/serialize errors like a JSON object
 @app.errorhandler(APIException)
